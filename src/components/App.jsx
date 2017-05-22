@@ -13,7 +13,7 @@ class App extends Component {
 
   render() {
     const messageNodes = this.state.messages.map((message, index) => (
-      <div key={index} style={{color: 'purple'}}>{message}</div>
+      <div key={index}>{message}</div>
     ));
 
     return (
