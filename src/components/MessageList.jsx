@@ -12,8 +12,10 @@ class MessageList extends Component {
     this.state = {
       messages: {}
     };
+    // Initialize Firebase ref
+    this.firebaseRef = fb.database().ref('messages');
     // Subscribe to chat messages and store them as an array on this.state
-    fb.on('child_added', (msg) => {
+    this.firebaseRef.on('child_added', (msg) => {
       // only add a message if it is not already in state
       if (this.state.messages[msg.key]) {
         return;
@@ -25,7 +27,7 @@ class MessageList extends Component {
       this.setState({ messages: this.state.messages });
     });
 
-    fb.on('child_removed', (msg) => {
+    this.firebaseRef.on('child_removed', (msg) => {
       const key = msg.key;
       delete this.state.messages[key];
       this.setState({ messages: this.state.messages });
@@ -34,9 +36,10 @@ class MessageList extends Component {
   }
 
   render() {
-    const messageNodes = _.values(this.state.messages).map(({ message, profilePic }, index) => (
-      <Message key={index} message={message} avatarUrl={profilePic} />
-    ));
+    const messageNodes = _.values(this.state.messages)
+      .map(({ message, profilePic }, index) => (
+        <Message key={index} message={message} avatarUrl={profilePic} />
+      ));
 
     return (
       <Card style={{

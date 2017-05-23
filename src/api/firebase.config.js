@@ -1,12 +1,12 @@
 import * as firebase from 'firebase';
+import config from './config';
 
-const config = {
-  apiKey: "AIzaSyCm1RLk1XLE6ScxnjftDe27ejHpw5-hBBo",
-  authDomain: "chat-app-f5d58.firebaseapp.com",
-  databaseURL: "https://chat-app-f5d58.firebaseio.com",
-  projectId: "chat-app-f5d58",
-  storageBucket: "chat-app-f5d58.appspot.com",
-  messagingSenderId: "1035935556900"
-};
+// Global Firebase instance
+export default firebase.initializeApp(config);
 
-export default firebase.initializeApp(config).database().ref('messages');
+// Auth ref (using Google)
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.addScope('profile');
+provider.addScope('email');
+
+export { provider };

@@ -31,6 +31,8 @@ class MessageBox extends Component {
     this.state = {
       message: ''
     };
+    // Initialize Firebase ref
+    this.firebaseRef = fb.database().ref('messages');
   }
 
   onChange(e) {
@@ -43,7 +45,7 @@ class MessageBox extends Component {
     if (e.keyCode === 13 && trim(e.target.value) != '') {  // if return key
       e.preventDefault();
       // Save message
-      fb.push({
+      this.firebaseRef.push({
         message: this.state.message
       });
       console.log("Sent a new message: ", e.target.value);
