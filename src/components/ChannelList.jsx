@@ -20,9 +20,16 @@ const Styles = {
 
 @connectToStores
 class ChannelList extends Component {
-  constructor() {
-    super();
-    ChatStore.getChannels();
+  componentDidMount() {
+    this.selectedChannel = this.props.params.channel;
+    ChatStore.getChannels(this.selectedChannel);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.selectedChannel != nextProps.params.channel) {
+      this.selectedChannel = nextProps.params.channel;
+      ChatStore.getChannels(this.selectedChannel);
+    }
   }
 
   static getStores() {
@@ -45,7 +52,7 @@ class ChannelList extends Component {
     const channelNodes = _(this.props.channels)
       .keys()
       .map((key) => (
-        <Channel key={key} channel={this.props.channels[key].name} />
+        <Channel key={key} channel={this.props.channels[key]} />
       ))
       .value();
 

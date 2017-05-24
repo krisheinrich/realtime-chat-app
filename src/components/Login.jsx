@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import mui from 'material-ui';
 import Actions from '../actions';
 
@@ -20,7 +20,11 @@ const Styles = {
 
 class Login extends Component {
   onClick() {
-    Actions.login();
+    Actions.login(this.context.router);
+  }
+
+  static contextTypes = {
+    router: PropTypes.func.isRequired
   }
 
   render() {

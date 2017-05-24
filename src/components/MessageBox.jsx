@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import mui from 'material-ui';
 import trim from 'trim';
 import _ from 'lodash';
-import fb from '../api/firebase.config';
+import Actions from '../actions';
 
 const { Card } = mui;
 
@@ -31,8 +31,6 @@ class MessageBox extends Component {
     this.state = {
       message: ''
     };
-    // Initialize Firebase ref
-    this.firebaseRef = fb.database().ref('messages');
   }
 
   onChange(e) {
@@ -42,12 +40,11 @@ class MessageBox extends Component {
   }
 
   onKeyUp(e) {
-    if (e.keyCode === 13 && trim(e.target.value) != '') {  // if return key
+    // Save message to firebase when user presses return key
+    if (e.keyCode === 13 && trim(e.target.value) != '') {
       e.preventDefault();
-      // Save message
-      this.firebaseRef.push({
-        message: this.state.message
-      });
+
+      Actions.sendMessage(this.state.message);
       console.log("Sent a new message: ", e.target.value);
       // Reset state
       this.setState({ message: '' });

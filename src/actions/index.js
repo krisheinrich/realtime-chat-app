@@ -5,23 +5,29 @@ class Actions {
   constructor() {
     this.generateActions(
       'channelsReceived',
-      'channelsFailed'
+      'channelsFailed',
+      'messagesReceived',
+      'messagesFailed',
+      'channelOpened',
+      'messagesLoading',
+      'sendMessage',
+      'messageSendSuccess',
+      'messageSendError',
+      'messageReceived'
     );
   }
 
-  login(args) {
+  login(router) {
     return (dispatch) => {
       fb.auth().signInWithPopup(provider)
         .then((result) => {
-          // const token = result.credential.accessToken;
           const user = result.user;
           dispatch(user);
-          console.dir(user);
-        }).catch((error) => {
+          // Redirect authenticated user
+          router.transitionTo('/chat');
+        })
+        .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          const email = error.email;
-          const credential = error.credential;
           if (errorCode === 'auth/account-exists-with-different-credential') {
             alert('You have already signed up with a different auth provider for that email.');
           } else {
